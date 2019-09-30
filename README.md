@@ -37,3 +37,108 @@ loop@ for (j in 1..100) {
 }
 ```
 
+详见：[标签处返回](https://www.kotlincn.net/docs/reference/returns.html#%E6%A0%87%E7%AD%BE%E5%A4%84%E8%BF%94%E5%9B%9E))
+
+
+
+### Kotlin/Everywhere Beijing 2019
+
+[用 Kotlin 提升你的开发效率 --- 陈龙博](http://www.itdks.com/Course/detail?id=117253)
+
+##### 中缀表达式
+
+```kotlin
+object Main {
+
+    @JvmStatic
+    fun main(args: Array<String>) {
+        val xiaoM = User("xiaoM", 18)
+        val xiaoH = User("xiaoH", 19)
+        if (xiaoM sameAge xiaoH) {
+            println("Same Age")
+        }
+    }
+
+}
+
+data class User(val name: String, val age: Int) {
+    infix fun sameAge(user: User): Boolean {
+        return this.age == user.age
+    }
+}
+```
+
+##### 标准函数
+
+```kotlin
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        val json = """
+            {
+                "name": "JSON"
+            }
+        """.trimIndent()
+        dealCityInfo(JSONObject(json)) {
+            Toast.makeText(this, "Fail", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun dealCityInfo(data: JSONObject?, fail: () -> Unit) {
+        data?.takeIf {
+            it.has("city_info")
+        }?.takeIf {
+            with(it.getJSONObject("city_info")) {
+                return@takeIf has("title") && has("data")
+            }
+        }?.let {
+            it.getJSONObject("city_info")
+        }.apply {
+
+        } ?: fail()
+    }
+```
+
+##### 扩展函数
+
+```kotlin
+    fun main(context: Context) {
+        println(1f.dp(context))
+    }
+
+    fun Float.dp(context: Context): Int {
+        return TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            this,
+            context.resources.displayMetrics
+        ).toInt()
+    }
+```
+
+##### “真”泛型
+
+```kotlin
+    inline fun <reified T : Activity> Activity?.startActivity() {
+        this?.startActivity(Intent(this, T::class.java))
+    }
+    
+    // use
+    startActivity<MainActivity>()
+```
+
+##### 集合操作
+
+```kotlin
+val list = listOf(0, 2, 5, -1)
+
+var result = list.any {
+    it > 1
+}
+println(result)
+result = list.all {
+    it > 1
+}
+println(result)
+```
+
