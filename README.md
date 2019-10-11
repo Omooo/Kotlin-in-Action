@@ -142,3 +142,47 @@ result = list.all {
 println(result)
 ```
 
+### Kotlin in Action
+
+##### 让你的代码更简洁：局部函数和扩展
+
+```kotlin
+data class User(val name: String, val age: Int)
+
+fun User.validateBeforeSave() {
+    fun validate(boolean: Boolean) {
+        if (!boolean) {
+            throw IllegalArgumentException("")
+        }
+    }
+    validate(this.name != "")
+    validate(this.age > 18)
+}
+
+fun saveUser(user: User) {
+    user.validateBeforeSave()
+    // save data
+    // ...
+}
+```
+
+##### 对象表达式：改变写法的匿名内部类
+
+object 关键字不仅仅能用来声明单例式的对象，还能用来声明匿名对象。匿名对象代替了 Java 中匿名内部类的用法。
+
+```kotlin
+var count = 0
+tv_content.setOnClickListener(object : View.OnClickListener {
+    override fun onClick(v: View?) {
+        toast("Count: ${count++}")
+    }
+})
+```
+
+与 Java 匿名内部类只能扩展一个类或实现一个接口不同，Kotlin 的匿名对象可以实现多个接口或者不实现接口。
+
+注意：与对象声明不同，匿名对象不是单例的。每次对象表达式被执行都会创建一个新的对象实例。
+
+与 Java 的匿名类一样，在对象表达式中的代码可以访问创建它的函数中的变量。但是与 Java 不同，访问并没有被限制在 final 变量，还可以在对象表达式中修改变量的值。
+
+对象表达式在需要在匿名对象中重写多个方法时是最有用的，如果只需要实现一个单方法的接口，用 Lambda 表达式即可。
